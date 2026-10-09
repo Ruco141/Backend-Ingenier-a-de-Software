@@ -1,5 +1,5 @@
 const getTareas = (req, res) => {
-    res.status(201).json({message: 'Get Tareas'})
+    res.status(200).json({message: 'Get Tareas'})
 
 }
 
@@ -12,6 +12,6 @@ const updateTareas = (req, res) => {
 }
 
 const deleteTareas = (req, res) => {
-    res.status(204).json({message: `Delete Tareas ${req.params.id}`})
+    res.status(200).json({message: `Delete Tareas ${req.params.id}`})
 }
 module.exports = {getTareas, createTareas, updateTareas, deleteTareas}
