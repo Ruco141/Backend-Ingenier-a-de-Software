@@ -1,17 +1,44 @@
-const getTareas = (req, res) => {
+const asyncHandler = require('express-async-handler')
+const Tarea = require('../models/tareaModels.js')
+
+const getTareas = asyncHandler(async (req, res) => {
+    const tareas = await Tarea.find()
     res.status(200).json({message: 'Get Tareas'})
 
-}
+})
 
-const createTareas = (req, res) => {
+const createTareas = asyncHandler(async (req, res) => {
+    if(!req.body.descripcion){
+        res.status(400)
+        throw new Error('Debes teclear una descripcion de la tarea')
+    }    
     res.status(201).json({message: 'Create Tareas'})
-}
 
-const updateTareas = (req, res) => {
-    res.status(200).json({message: `Update Tareas ${req.params.id}`})
-}
+    const tarea = await Tarea.create({
+        descripcion: req.body.descripcion
+    })
 
-const deleteTareas = (req, res) => {
+    res.status(201).json(tarea)
+
+})
+
+
+
+const updateTareas = asyncHandler(async (req, res) => {
+    //primero verificamos que la tarea exista
+    const tarea = await Tarea.findById(req.params.id)
+
+    if(!tarea){
+        res.status(404)
+        throw new Error('Tarea especificada no existe')
+    }
+
+    const updatedTarea = await Tarea.findByIdAndUpdate(req.params.id, req.body, {new: true})
+
+    res.status(200).json(updatedTarea)
+})
+
+const deleteTareas = asyncHandler(async (req, res) => {
     res.status(200).json({message: `Delete Tareas ${req.params.id}`})
-}
+})
 module.exports = {getTareas, createTareas, updateTareas, deleteTareas}
