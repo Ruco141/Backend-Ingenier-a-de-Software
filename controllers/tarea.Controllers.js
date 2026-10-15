@@ -3,7 +3,7 @@ const Tarea = require('../models/tareaModels.js')
 
 const getTareas = asyncHandler(async (req, res) => {
     const tareas = await Tarea.find()
-    res.status(200).json({message: 'Get Tareas'})
+    res.status(200).json(tareas)
 
 })
 
@@ -11,8 +11,7 @@ const createTareas = asyncHandler(async (req, res) => {
     if(!req.body.descripcion){
         res.status(400)
         throw new Error('Debes teclear una descripcion de la tarea')
-    }    
-    res.status(201).json({message: 'Create Tareas'})
+    }
 
     const tarea = await Tarea.create({
         descripcion: req.body.descripcion
